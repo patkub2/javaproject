@@ -47,16 +47,21 @@ public class Controller {
         }
         catch(InvalidCLInputException e)
         {
+            
             view.printErrorMsg(e);
             model.setFromCL(false);
         }
 
         while (true) {
             model.setNoError(true);
+            System.out.print(model.getFromCL());
             if (model.getFromCL()) {
+                System.out.print("XD0\n");
               //  window.cleanText();
             }
+            //System.out.print(model.getFromCL());
             if (!model.getFromCL()) {
+                System.out.print("XD1\n");
               //  window.buttonClicked();
               //  window.cleanText();
                 model.setSeed(view.getKeySeed());
@@ -64,9 +69,10 @@ public class Controller {
                 model.setChoice(view.getChoice());
             }
             model.setKey();
+            System.out.print("setKey\n");
             model.setChoose(model.getChoice());
             switch (model.getChoose()) {
-                case ENCRYPT: {
+                case ENCRYPT ->  {
                     if (!model.getFromCL()) {
                         model.setText(view.toEncode());
                         //model.setText(view.getText());
@@ -81,9 +87,8 @@ public class Controller {
                         model.setFromCL(false);
                         model.setNoError(false);
                     }
-                    break;
                 }
-                case DECRYPT: {
+                case DECRYPT ->  {
                     if (!model.getFromCL()) {
                         model.setText(view.toDecode());
                        // model.setText(window.getText());
@@ -99,9 +104,8 @@ public class Controller {
                         model.setNoError(false);
                     }
 
-                    break;
                 }
-                case BOTH: {
+                case BOTH ->  {
                     if (!model.getFromCL()) {
                         model.setText(view.toEncode());
                        // model.setText(window.getText());
@@ -115,7 +119,6 @@ public class Controller {
                       //  window.setText(e.getMessage());
                         model.setFromCL(false);
                         model.setNoError(false);
-                        break;
                     }
                     view.printString(model.getText());
                    // window.setText(model.getText());
@@ -129,7 +132,6 @@ public class Controller {
                         model.setFromCL(false);
                         model.setNoError(false);
                     }
-                    break;
                 }
             }
            // window.notifyWaiter();

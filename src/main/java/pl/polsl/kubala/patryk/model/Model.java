@@ -338,11 +338,14 @@ public class Model {
      */
     public void takeFromCommandLine(String[] commandLineArgs) throws InvalidCLInputException
     {
+        
+        
         boolean seedChange=false;
         boolean choiceChange=false;
         int i=0;
         for(String arg : commandLineArgs)
         {
+            
             if(i==commandLineArgs.length)
             {
                 break;
@@ -353,12 +356,14 @@ public class Model {
             }
             if(arg.equals("-s")&& commandLineArgs[i+1]!=null)
             {
+                
                 seed=(int)commandLineArgs[i+1].charAt(0)-32;
                 seedChange=true;
                 i++;
             }
             else if((arg.equals("-e")||arg.equals("-d")||arg.equals("-b"))&& commandLineArgs[i+1]!=null)
             {
+               
                 text="";
                 switch (arg) {
                     case "-e" -> choice =0;
@@ -379,6 +384,7 @@ public class Model {
                 }
                 choiceChange=true;
             }
+             System.out.print(choice);
             i++;
         }
 
