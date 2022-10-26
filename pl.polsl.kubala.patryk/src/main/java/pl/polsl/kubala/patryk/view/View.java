@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Class responsible for displaying outbound and error streams and using scanners to collect in streams
  *
  * @author Patryk Kubala
- * @version 1.0
+ * @version 1.1
  */
 public class View {
 
@@ -60,7 +60,10 @@ public class View {
         return choiceNumber;
     }
 
- 
+    /**
+     *
+     * @return
+     */
     public String toEncode()
     {
         System.out.println("Enter the text to be encoded");
@@ -102,7 +105,12 @@ public class View {
         System.out.println("Do you want to\n0. Encode\n1. Decode\n");
     }
 
-       public void printTextBeforeAfter(String Before,String After)
+    /**
+     *
+     * @param Before Code printed before encoding / decoding
+     * @param After Code printed after encoding / decoding
+     */
+    public void printTextBeforeAfter(String Before,String After)
     {
         System.out.println("Orginal text: "+Before+"\n"+"encode/decoded text: "+After+"\n");
     }

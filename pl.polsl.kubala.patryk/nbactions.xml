@@ -12,7 +12,7 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>-g 234</exec.appArgs>
+                <exec.appArgs>-s 123 -d 591 180 949 730 847 411</exec.appArgs>
                 <exec.mainClass>pl.polsl.kubala.patryk.controller.Main</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir>C:\Users\patry\Documents\NetBeansProjects\pl.polsl.kubala.patryk</exec.workingdir>
@@ -30,7 +30,7 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>-g 234</exec.appArgs>
+                <exec.appArgs>-s 123 -d 591 180 949 730 847 411</exec.appArgs>
                 <exec.mainClass>pl.polsl.kubala.patryk.controller.Main</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
@@ -51,7 +51,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>pl.polsl.kubala.patryk.controller.Main</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>-g 234</exec.appArgs>
+                <exec.appArgs>-s 123 -d 591 180 949 730 847 411</exec.appArgs>
                 <exec.workingdir>C:\Users\patry\Documents\NetBeansProjects\pl.polsl.kubala.patryk</exec.workingdir>
             </properties>
         </action>

@@ -15,7 +15,6 @@ public class Controller {
     /** A {@link pl.polsl.kubala.patryk.model.Model} object used to for calling methods */
     private Model model;
     
-
     /**
      * {@link Controller}  It takes command line arguments and passes it to controller method.
      * {@link pl.polsl.kubala.patryk.model.View} Initializes the objects present inside of this class.
@@ -39,6 +38,7 @@ public class Controller {
         try
         {
             model.takeFromCommandLine(args);
+            
         }
         catch(IncorrectInputException e)
         {  

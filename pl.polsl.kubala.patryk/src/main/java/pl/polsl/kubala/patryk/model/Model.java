@@ -2,23 +2,20 @@ package pl.polsl.kubala.patryk.model;
 import java.util.*;
 
 /**
- * Class containing all of the variables as well as methods responsible for checking and actually encoding/decoding the text
+ * Class containing all variables and methods responsible for checking and actually encoding / decoding the text
  *
  * @author Patryk Kubala
- * @version 1.0
+ * @version 1.1
  */
 public class Model {
 
     /**
-     * The encodeion key. Initially empty, later given values using method setKey
+     * Encoding key. Initially empty, then values are given using the setKey method
      */
-    private final List<List<Integer>> key = new ArrayList<List<Integer>>(96);
+    private final List<List<Integer>> key = new ArrayList<>(96);
 
     /**
-     * Enumerated type designed to better show user's desicion whether to encode or decode
-     *
-     * @author Patryk Kubala
-     * @version 1.1
+     * An enumerated type designed to better show the user's decision whether to encode or decode
      */
     public enum EnumChoice
     {
@@ -36,17 +33,17 @@ public class Model {
 
 
     /**
-     * The choice whether user wants to encode or decode, given either through command line or scanner changed from int to enumerated enumChoice value
+     * Choice of user want to encode or decode, given via command line or scanner changed from int to enumChoice enumerated value
      */
     private EnumChoice choiceEnum;
 
     /**
-     * The seed for key generation, given either through command line or scanner
+     * Grain for generating keys, given via command line or scanner
      */
     private int seed;
 
     /**
-     * The choice whether user wants to encode or decode, given either through command line or scanner
+     * Choose whether the user wants to encode or decode using the command line or scanner
      */
     private int choice;
 
@@ -132,7 +129,7 @@ public class Model {
     /**
      * Returns the value of the private field "choiceEnum"
      *
-     * @return enumChoice containing the value of the private field in the {@link Model}.
+     * @return enumChoice containing the value of the private field in {@link Model}.
      */
     public EnumChoice getchoiceEnum()
     {
@@ -142,7 +139,7 @@ public class Model {
     /**
      * Returns the value of the private field "seed"
      *
-     * @return int containing the value of the private field in the {@link Model}.
+     * @return int containing the value of the private field in {@link Model}.
      */
     public int getSeed()
     {
@@ -152,7 +149,7 @@ public class Model {
     /**
      * Returns the value of the private field "choice"
      *
-     * @return int containing the value of the private field in the {@link Model}.
+     * @return int containing the value of the private field in {@link Model}.
      */
     public int getChoice()
     {
@@ -162,7 +159,7 @@ public class Model {
     /**
      * Returns the value of the private field "Text"
      *
-     * @return String containing the value of the private field in the {@link Model}.
+     * @return String containing the value of the private field in {@link Model}.
      */
     public String getText()
     {
@@ -172,7 +169,7 @@ public class Model {
     /**
      * Returns the value of the private field "noError"
      *
-     * @return boolean containing the value of the private field in the {@link Model}.
+     * @return boolean containing the value of the private field in {@link Model}.
      */
     public boolean getNoError()
     {
@@ -182,7 +179,7 @@ public class Model {
     /**
      * Returns the value of the private field "fromCL"
      *
-     * @return boolean containing the value of the private field in the {@link Model}.
+     * @return boolean containing the value of the private field in {@link Model}.
      */
     public boolean getFromCL()
     {
@@ -192,7 +189,7 @@ public class Model {
     /**
      * Returns the value of the private field "key"
      *
-     * @return List containing the value of the private field in the {@link Model}.
+     * @return List containing the value of the private field in {@link Model}.
      */
     public List<List<Integer>> getKey()
     {
@@ -225,7 +222,9 @@ public class Model {
             }
             if(arg.equals("-s")&& commandLineArgs[i+1]!=null)
             {
-                seed=(int)commandLineArgs[i+1].charAt(0)-32;
+                
+               seed = Integer.parseInt(String.valueOf(commandLineArgs[i+1]));
+                
              
                 seedChange=true;
                 i++;
