@@ -4,46 +4,41 @@ import java.util.*;
 /**
  * Class containing all of the variables as well as methods responsible for checking and actually encoding/decoding the text
  *
- * @author Mateusz Grabowski
- * @version 3.0
+ * @author Patryk Kubala
+ * @version 1.0
  */
 public class Model {
 
     /**
-     * The encryption key. Initially empty, later given values using method setKey
+     * The encodeion key. Initially empty, later given values using method setKey
      */
     private final List<List<Integer>> key = new ArrayList<List<Integer>>(96);
 
     /**
-     * Enumerated type designed to better show user's desicion whether to encode, decode or both
+     * Enumerated type designed to better show user's desicion whether to encode or decode
      *
-     * @author Mateusz Grabowski
-     * @version 1.2
+     * @author Patryk Kubala
+     * @version 1.1
      */
     public enum EnumChoice
     {
 
-        /**
-         * the value of enumChoice showing the user wants only to encrypt, it corresponds to choice value of 1
+       /**
+         * Selected value shows that user selected encodeion as his steep, it corresponds to choice value of 1
          */
-        ENCRYPT,
+        ENCODE,
 
         /**
-         * the value of enumChoice showing the user wants only to decrypt, it corresponds to choice value of 2
+         * Selected value shows that user selected decodeion as his steep, it corresponds to choice value of 2
          */
-        DECRYPT,
-
-        /**
-         * the value of enumChoice showing the user wants to encrypt and decrypt, it corresponds to choice value of 3
-         */
-        BOTH
+        DECODE,
     }
 
 
     /**
-     * The choice whether user wants to encode, decode or both, given either through command line or scanner changed from int to enumerated enumChoice value
+     * The choice whether user wants to encode or decode, given either through command line or scanner changed from int to enumerated enumChoice value
      */
-    private EnumChoice choose;
+    private EnumChoice choiceEnum;
 
     /**
      * The seed for key generation, given either through command line or scanner
@@ -51,7 +46,7 @@ public class Model {
     private int seed;
 
     /**
-     * The choice whether user wants to encode, decode or both, given either through command line or scanner
+     * The choice whether user wants to encode or decode, given either through command line or scanner
      */
     private int choice;
 
@@ -61,7 +56,7 @@ public class Model {
     private String text;
 
     /**
-     * Boolean used in {@link pl.polsl.kubala.patryk.controller.Controller} to check a loop
+     * Boolean used in {@link pl.polsl.kubala.patryk.controller.Controller} to check if there is a error in loop
      */
     private boolean noError = true;
 
@@ -71,74 +66,77 @@ public class Model {
     private boolean fromCL = true;
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets its enum counterpart as choose
+     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets its enum counterpart as choiceEnum
      *
-     * @param choiceGiven the value given
+     * @param choiceArg the value given
      */
-    public void setChoose(int choiceGiven)
+    public void setchoiceEnum(int choiceArg)
     {
         EnumChoice[] choices = EnumChoice.values();
-        choose = choices[choiceGiven];
+        choiceEnum = choices[choiceArg];
+       
     }
 
     /**
      * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the noError
      *
-     * @param boolGiven the value given
+     * @param boolArg the value given
      */
-    public void setNoError(boolean boolGiven)
+    public void setNoError(boolean boolArg)
     {
-        noError=boolGiven;
+        noError=boolArg;
     }
 
     /**
      * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the fromCL
      *
-     * @param boolGiven the value given
+     * @param boolArg the value given
      */
-    public void setFromCL(boolean boolGiven)
+    public void setFromCL(boolean boolArg)
     {
-        fromCL=boolGiven;
+        fromCL=boolArg;
     }
 
     /**
      * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the seed
      *
-     * @param seedGiven the value given
+     * @param seedArg the value given
      */
-    public void setSeed(int seedGiven)
+    public void setSeed(int seedArg)
     {
-        seed=seedGiven;
+        seed=seedArg;
     }
 
     /**
      * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the choice
      *
-     * @param choiceGiven the value given
+     * @param choiceArg the value given
      */
-    public void setChoice(int choiceGiven)
+    public void setChoice(int choiceArg)
     {
-        choice=choiceGiven;
+        
+        choice=choiceArg;
+        
     }
 
     /**
      * Takes a String from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the text
      *
-     * @param textGiven the String given
+     * @param textArg the String given
      */
-    public void setText(String textGiven)
+    public void setText(String textArg)
     {
-        text=textGiven;
+        text=textArg;
     }
 
     /**
-     * Returns the value of the private field "choose"
+     * Returns the value of the private field "choiceEnum"
      *
      * @return enumChoice containing the value of the private field in the {@link Model}.
      */
-    public EnumChoice getChoose()
+    public EnumChoice getchoiceEnum()
     {
-        return choose;
+        return choiceEnum;
     }
 
     /**
@@ -200,6 +198,74 @@ public class Model {
     {
         return key;
     }
+    
+    /**
+     * Function that checks command line arguments and saves them into appropiate variables
+     *
+     * @param commandLineArgs command line argument passed from main through {@link pl.polsl.kubala.patryk.controller.Controller}
+     * @throws IncorrectInputException if not all of the required fields are filled using command line
+     */
+    public void takeFromCommandLine(String[] commandLineArgs) throws IncorrectInputException
+    {
+        
+        
+        boolean seedChange=false;
+        boolean choiceAndText=false;
+        int i=0;
+        for(String arg : commandLineArgs)
+        {
+            
+            if(i>=commandLineArgs.length)
+            {
+                break;
+            }
+            if((!(arg.equals(commandLineArgs[i]))))
+            {
+                continue;
+            }
+            if(arg.equals("-s")&& commandLineArgs[i+1]!=null)
+            {
+                seed=(int)commandLineArgs[i+1].charAt(0)-32;
+             
+                seedChange=true;
+                i++;
+            }
+            else if((arg.equals("-e")||arg.equals("-d"))&& commandLineArgs[i+1]!=null)
+            {
+               
+                text="";
+                switch (arg) {
+                    case "-e" -> choice =0;
+                    case "-d" -> choice =1;
+                    default -> {
+                    }
+                }
+              
+                for(int j = i+1; j < commandLineArgs.length; j++)
+                {
+                    if(commandLineArgs[j].charAt(0) == '-')
+                    {
+                        break;
+                    }
+                    text = text + commandLineArgs[j] + " ";
+                     
+                    i = j;
+
+                }
+                text = text.replaceFirst(".$","");
+                choiceAndText=true;
+                
+                
+            }
+             
+            i++;
+        }
+
+        if(!choiceAndText||!seedChange)
+        {
+            throw new IncorrectInputException("Invalid data on the command line");
+        }
+    }
 
     /**
      * Function that takes the seed (from the private field in the {@link Model}) and uses it, as the name suggests, as the seed for the semi-random generation of the key.
@@ -244,12 +310,12 @@ public class Model {
     }
 
     /**
-     * Function taking encrypted symbol and returning its ASCII code
+     * Function taking encodeed symbol and returning its ASCII code
      *
-     * @param input The encrypted symbol
+     * @param input The encodeed symbol
      * @return The ASCII code of the given sybmbol
      */
-    private int findDecryption(String input)
+    private int findDecodeion(String input)
     {
         int inputInt = (((int)input.charAt(0)-48)*100)+(((int)input.charAt(1)-48)*10)+(int)input.charAt(2)-48;
         int out=0;
@@ -270,24 +336,30 @@ public class Model {
     }
 
     /**
-     * Function that takes encrypted text (from the private field in {@link Model}), decrypts it and returns it decrypted
+     * Function that takes encodeed text (from the private field in {@link Model}), decodes it and returns it decodeed
      *
-     * @return Decrypted text
-     * @throws IncorrectEncryptOrDecryptTextException if the text formatting is incorect for decryption
+     * @return Decodeed text
+     * @throws IncorrectTextException if the text formatting is incorect for decodeion
      */
-    public String decryptText () throws IncorrectEncryptOrDecryptTextException
+    public String decodeText () throws IncorrectTextException
     {
         StringBuilder output= new StringBuilder();
         for(int i=0; i<text.length(); i++)
         {
+         
             if(((i+1)%4==0)&&(text.charAt(i)!=' '))
             {
-                throw new IncorrectEncryptOrDecryptTextException("Enter text in \nXXX XXX XXX(..)\n format where X is a number");
+                throw new IncorrectTextException("Wrong format!\nEnter text in XXX XXX XXX(..) form where X is a number");
             }
-            else if(text.charAt(0)<'0'||text.charAt(0)>'9')
+            else if((text.charAt(i)<'0'||text.charAt(i)>'9')&&text.charAt(i)!=' ')
             {
-                throw new IncorrectEncryptOrDecryptTextException("Enter text in \nXXX XXX XXX(..)\n format where X is a number");
+           
+                throw new IncorrectTextException("Wrong format!\nEnter text in XXX XXX XXX(..) form where X is a number");
+            } else if((text.length()+1)%4 != 0)
+            {
+                throw new IncorrectTextException("Wrong format!\nEnter text in XXX XXX XXX(..) form where X is a number");
             }
+            
         }
         for(int i=0; i<text.length(); i++)
         {
@@ -297,19 +369,19 @@ public class Model {
                 full.append(text.charAt(i));
                 i++;
             }
-            char symbol = (char)findDecryption(full.toString());
+            char symbol = (char)findDecodeion(full.toString());
             output.append(symbol);
         }
         return output.toString();
     }
 
     /**
-     * Function that takes text (from the private field in {@link Model}), encrypts it and returns it encrypted
+     * Function that takes text (from the private field in {@link Model}), encodes it and returns it encodeed
      *
      * @return Encrypted text
-     * @throws IncorrectEncryptOrDecryptTextException if the text contains forbidden symbols, for example letters outside of english alphabet
+     * @throws IncorrectTextException if the text contains forbidden symbols, for example letters outside of english alphabet
      */
-    public String encryptText() throws IncorrectEncryptOrDecryptTextException
+    public String encodeText() throws IncorrectTextException
     {
         StringBuilder output= new StringBuilder();
         for(int i=0; i<text.length(); i++)
@@ -317,7 +389,7 @@ public class Model {
             final char DELETE= (char)127;
             if((text.charAt(i))< ' ' ||(text.charAt(i))> DELETE )
             {
-                throw new IncorrectEncryptOrDecryptTextException("Text not supported");
+                throw new IncorrectTextException("Text not supported");
             }
         }
         for(int i=0; i<text.length(); i++)
@@ -330,80 +402,6 @@ public class Model {
         return output.toString();
     }
 
-    /**
-     * Function that checks command line arguments and saves them into appropiate variables
-     *
-     * @param commandLineArgs command line argument passed from main through {@link pl.polsl.kubala.patryk.controller.Controller}
-     * @throws InvalidCLInputException if not all of the required fields are filled using command line
-     */
-    public void takeFromCommandLine(String[] commandLineArgs) throws InvalidCLInputException
-    {
-        
-        
-        boolean seedChange=false;
-        boolean choiceChange=false;
-        int i=0;
-        for(String arg : commandLineArgs)
-        {
-            
-            if(i==commandLineArgs.length)
-            {
-                break;
-            }
-            if((!(arg.equals(commandLineArgs[i]))))
-            {
-                continue;
-            }
-            if(arg.equals("-s")&& commandLineArgs[i+1]!=null)
-            {
-                System.out.print("CL: "+commandLineArgs[i+1]+"\n");
-                //System.out.print("CL: "+commandLineArgs[i+1]+"\n");
-                System.out.print("Seed beffore: "+commandLineArgs[i+1].charAt(0)+"\n");
-                seed=(int)commandLineArgs[i+1].charAt(0)-32;
-                System.out.print("SEED: "+seed+"\n");
-                seedChange=true;
-                i++;
-            }
-            else if((arg.equals("-e")||arg.equals("-d")||arg.equals("-b"))&& commandLineArgs[i+1]!=null)
-            {
-               
-                text="";
-                switch (arg) {
-                    case "-e" -> choice =0;
-                    case "-d" -> choice =1;
-                    case "-b" -> choice =2;
-                    default -> {
-                    }
-                }
-                System.out.print("Choice: "+choice+"\n");
-                for(int j = i+1; j < commandLineArgs.length; j++)
-                {
-                    if(commandLineArgs[j].charAt(0) == '-')
-                    {
-                        break;
-                    }
-                    text = text + commandLineArgs[j] + " ";
-                    i = j;
-
-                }
-                choiceChange=true;
-                System.out.print("Text: "+text+"\n");
-            }
-             
-            i++;
-        }
-
-        if(!choiceChange||!seedChange)
-        {
-            throw new InvalidCLInputException("""
-                                              invalid command line input
-                                              put a "-s" and then the seed number
-                                              put also "-e", "-d" or "-b" flag to encode, decode or both and then the text you want to perform given operation on
-                                              but now input the data manually
-                                              
-                                              """);
-        }
-    }
 
     /**
      * Clear key.

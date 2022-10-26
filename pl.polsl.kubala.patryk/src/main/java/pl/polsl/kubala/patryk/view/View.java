@@ -2,32 +2,26 @@ package pl.polsl.kubala.patryk.view;
 import java.util.Scanner;
 
 /**
- * Class that is responsible for displaying out and err streams and using scanners to collect in streams
+ * Class responsible for displaying outbound and error streams and using scanners to collect in streams
  *
- * @deprecated
- * @author Mateusz Grabowski
+ * @author Patryk Kubala
  * @version 1.0
  */
 public class View {
 
 
 
-    public View()
-    {
-        
-       
-    }
-
+   
 
     /**
-     * Function asking user and collecting the answer what is the Key Seed they want to use. 
+     * A function that asks the user and takes the answer what is the Key Seed they want to use.
      * Used in {@link pl.polsl.kubala.patryk.controller.Controller} if incomplete information is provided in command line
      *
      * @return Seed provided by the user
      */
     public int getKeySeed()
     {
-        int seedNumber =0;
+        int seedNumber;
 
         System.out.println("What is the seed for your key?");
         Scanner seedScanner = new Scanner(System.in);
@@ -42,7 +36,7 @@ public class View {
     }
 
     /**
-     * Function collecting the answer from the user whether they want to encode, decode ot both. 
+     * A function that collects a response from the user whether he wants to encode or decode.
      * Used in {@link pl.polsl.kubala.patryk.controller.Controller} if incomplete information is provided in command line
      *
      * @return Choice provided by the user
@@ -53,35 +47,44 @@ public class View {
         do
         {
             Scanner choiceScanner = new Scanner(System.in);
-            System.out.println("Please Enter a number from 1 to 3");
+            System.out.println("Please enter a number from 0 to 1");
             while(!choiceScanner.hasNextInt())
             {
-                System.out.println("Please enter a number from 1 to 3");
+                System.out.println("Please enter a number from 0 to 1");
                 choiceScanner.nextLine();
 
             }
             choiceNumber = choiceScanner.nextInt();
         }
-        while(choiceNumber<1||choiceNumber>3);
+        while(choiceNumber<0||choiceNumber>1);
         return choiceNumber;
     }
 
-    /**
-     * Function asking user and collecting the answer what is the text they want to encode. 
-     * Used in {@link pl.polsl.kubala.patryk.controller.Controller} if incomplete information is provided in command line
-     *
-     * @return Text provided by the user
-     */
+ 
     public String toEncode()
     {
-        System.out.println("Enter text to be Encoded");
+        System.out.println("Enter the text to be encoded");
         Scanner scannedEncode = new Scanner(System.in);
         String toEncode = scannedEncode.nextLine();
         return toEncode;
     }
 
     /**
-     * Function printing the exact contents of the string provided to it
+    * The function asks the user and collects the answer what text he wants to decode.
+    * Used in {@link pl.polsl.kubala.patryk.controller.Controller} if incomplete information is provided on the command line
+    *
+    * @return User-supplied text
+     */
+    public String toDecode()
+    {
+        System.out.println("Enter text in XXX XXX XXX(..) form where X is a number");
+        Scanner scannedDecode = new Scanner(System.in);
+        String toDecode = scannedDecode.nextLine();
+        return toDecode;
+    }
+    
+    /**
+     * A function that prints the exact content of the string supplied to it
      *
      * @param Input The string that is to be printed
      */
@@ -90,30 +93,21 @@ public class View {
         System.out.println(Input);
     }
 
-    /**
-     * Function asking user and collecting the answer what is the text they want to decode. 
-     * Used in {@link pl.polsl.kubala.patryk.controller.Controller} if incomplete information is provided in command line
-     *
-     * @return Text provided by the user
-     */
-    public String toDecode()
-    {
-        System.out.println("Enter text in \nXXX XXX XXX(..)\nformat where X is a number");
-        Scanner scannedDecode = new Scanner(System.in);
-        String toDecode = scannedDecode.nextLine();
-        return toDecode;
-    }
 
     /**
-     * Function showing a simple text asking user whether he wants to encode, decode or both
+     * Function showing a simple text asking user whether he wants to encode or decode
      */
     public void showMenu()
     {
-        System.out.println("Do you want to\n1. Encode\n2. Decode\n3. Both:");
+        System.out.println("Do you want to\n0. Encode\n1. Decode\n");
     }
 
+       public void printTextBeforeAfter(String Before,String After)
+    {
+        System.out.println("Orginal text: "+Before+"\n"+"encode/decoded text: "+After+"\n");
+    }
     /**
-     * Function printing exception's error message
+     * Exception Print function error message
      *
      * @param e Exception needing its error message printed
      */

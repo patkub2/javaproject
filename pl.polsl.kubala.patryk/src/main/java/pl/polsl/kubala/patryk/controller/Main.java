@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package pl.polsl.kubala.patryk.controller;
 import pl.polsl.kubala.patryk.controller.Controller;
 
 /**
+ * Class responsible for accurately calling {@link pl.polsl.kubala.patryk.model.Model} methods
  *
- * @author patry
+ * @author Patryk Kubala
+ * @version 1.1
  */
 public class Main {
      public static void main(String... args) {

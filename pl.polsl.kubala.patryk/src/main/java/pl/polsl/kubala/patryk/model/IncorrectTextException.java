@@ -1,11 +1,11 @@
 package pl.polsl.kubala.patryk.model;
 /**
- * Exception that is thrown if the text that is to be encrypted or decrypted doesn't meet the criteria of this operation
+ * The exception that is thrown if the text to be encoded or decoded does not meet the criteria for this operation
  * 
- * @author Mateusz Grabowski
+ * @author Patryk Kubala
  * @version 1.0
  */
-public class IncorrectEncryptOrDecryptTextException 
+public class IncorrectTextException 
     extends Exception
         {
     
@@ -14,7 +14,7 @@ public class IncorrectEncryptOrDecryptTextException
      * 
      * @param errorMessage Message shown when the exception is caught
      */
-    public IncorrectEncryptOrDecryptTextException(String errorMessage) 
+    public IncorrectTextException(String errorMessage) 
             {
             super(errorMessage);
             }

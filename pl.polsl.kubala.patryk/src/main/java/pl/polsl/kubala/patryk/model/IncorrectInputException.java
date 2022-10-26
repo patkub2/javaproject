@@ -1,11 +1,11 @@
 package pl.polsl.kubala.patryk.model;
 /**
- * Exception that is thrown if the input in the command line does not include all of the required fields
+ * An exception is thrown if the command line input does not contain all the required fields
  * 
- * @author Mateusz Grabowski
+ * @author Patryk Kubala
  * @version 1.0
  */
-public class InvalidCLInputException 
+public class IncorrectInputException 
         extends Exception
         {
  
@@ -14,7 +14,7 @@ public class InvalidCLInputException
      * 
      * @param errorMessage Message shown when the exception is caught
      */
-    public InvalidCLInputException(String errorMessage) 
+    public IncorrectInputException(String errorMessage) 
             {
             super(errorMessage);
             }
