@@ -54,6 +54,7 @@ public class Controller {
                 model.setChoice(view.getChoice());
             }
             model.setKey();
+            
             model.setchoiceEnum(model.getChoice());
             switch (model.getchoiceEnum()) {
                 // DECODE ------------------------
