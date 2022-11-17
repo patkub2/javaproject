@@ -59,9 +59,11 @@ public class ControllerWindow {
         while (true) {
             model.setNoError(true);
             if (!model.getFromCL()) {
-                model.setSeed(view.getKeySeed());
-                view.showMenu();
-                model.setChoice(view.getChoice());
+                window.buttonWaitForClicked();
+                model.setSeed(window.getKeySeed());
+                //view.showMenu();
+                System.out.println("test2");
+                model.setChoice(window.getChoice());
             }
             model.setKey();
             
@@ -71,16 +73,17 @@ public class ControllerWindow {
                 case DECODE ->  {
                  
                     if (!model.getFromCL()) {
-                        model.setText(view.toDecode());
+                        model.setText(window.toDecode());
                     }
                 
                     try {
                       
-                        view.printTextBeforeAfter(model.getText() ,model.decodeText());
+                        window.printToTextOutput(model.decodeText());
                         
                       model.setText(model.decodeText());
                     } catch (IncorrectTextException e) {
-                     
+                        window.notifyWaiter();
+                        window.printErrorMsg(e);
                         model.setFromCL(false);
                         model.setNoError(false);
                     }
@@ -92,9 +95,11 @@ public class ControllerWindow {
                         model.setText(view.toEncode());
                     }
                     try {
-                         view.printTextBeforeAfter(model.getText() ,model.encodeText());
+                         window.printToTextOutput(model.encodeText());
                        
                     } catch (IncorrectTextException e) {
+                        window.notifyWaiter();
+                        window.printErrorMsg(e);
                         model.setFromCL(false);
                         model.setNoError(false);
                     }

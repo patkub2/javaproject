@@ -20,6 +20,8 @@ public class Window extends javax.swing.JFrame {
         decryptRadio.setSelected(rootPaneCheckingEnabled);
     }
 
+    private final Object waiter = new Object();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,12 +34,12 @@ public class Window extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        decrypt = new javax.swing.JButton();
+        submit = new javax.swing.JButton();
         textInput = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         textOutput = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        seed = new javax.swing.JTextField();
+        seedInput = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         encryptRadio = new javax.swing.JRadioButton();
@@ -48,10 +50,10 @@ public class Window extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        decrypt.setText("Decode");
-        decrypt.addActionListener(new java.awt.event.ActionListener() {
+        submit.setText("Submit");
+        submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                decryptActionPerformed(evt);
+                submitActionPerformed(evt);
             }
         });
 
@@ -78,9 +80,9 @@ public class Window extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Homophonic cipher");
 
-        seed.addActionListener(new java.awt.event.ActionListener() {
+        seedInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seedActionPerformed(evt);
+                seedInputActionPerformed(evt);
             }
         });
 
@@ -109,7 +111,7 @@ public class Window extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addComponent(seed)
+                        .addComponent(seedInput)
                         .addComponent(jLabel3)
                         .addComponent(textInput)))
                 .addGap(87, 87, 87))
@@ -118,7 +120,7 @@ public class Window extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(decrypt)
+                        .addComponent(submit)
                         .addGap(111, 111, 111)))
                 .addGap(54, 54, 54))
         );
@@ -130,7 +132,7 @@ public class Window extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(seed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(seedInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -140,7 +142,7 @@ public class Window extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(encryptRadio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decrypt)
+                .addComponent(submit)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
@@ -190,9 +192,9 @@ public class Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void seedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seedActionPerformed
+    private void seedInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seedInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_seedActionPerformed
+    }//GEN-LAST:event_seedInputActionPerformed
 
     private void textOutputAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_textOutputAncestorAdded
         // TODO add your handling code here:
@@ -203,20 +205,79 @@ public class Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_textInputKeyTyped
 
-    private void decryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptActionPerformed
+    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
+        System.out.println("test1");
+         if(seedInput.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Please provide a number as a seed",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else if(textInput.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Please provide a text to perform an operation on",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            synchronized (this) {
+                this.notify();
+                System.out.println("test4");
+            }
+           // waitForWaiter();
+          //  fillTable();
+        }
+        
+    }//GEN-LAST:event_submitActionPerformed
 
-        System.out.println(textInput.getText());
-    }//GEN-LAST:event_decryptActionPerformed
+    public void waitForWaiter(){
+        synchronized (waiter)
+        {
+            try
+            {
+                waiter.wait();
+            }
+            catch (InterruptedException ignored)
+            {
 
-    
-    
-    
-    public void printErrorMsg(Exception e)
-    {
-        System.out.println("works");
-        JOptionPane.showMessageDialog(rootPane, e, "Error", HEIGHT);
+            }
+        }
     }
+    
+         public void buttonWaitForClicked(){
+             System.out.println("test3");
+        synchronized (this)
+        {
+            try
+            {
+                this.wait();
+                System.out.println("test13");
+            }
+            catch (InterruptedException ignored)
+            {
+
+            }
+        }
+        System.out.println("test5");
+    }
+    
+     /**
+     * Notify waiter.
+     */
+    public void notifyWaiter()
+    {
+        synchronized (waiter)
+        {
+            waiter.notify();
+        }
+    }
+    
+    
+  
     public void errorPop(String e)
     {
         System.out.println("works");
@@ -226,7 +287,7 @@ public class Window extends javax.swing.JFrame {
    
     public int getKeySeed()
     {
-        String i = seed.getText();
+        String i = seedInput.getText();
        
         return Integer.parseInt(i);
     }
@@ -248,14 +309,43 @@ public class Window extends javax.swing.JFrame {
         while(choiceNumber<0||choiceNumber>1);
         return choiceNumber;
     }
+    
+    public String toDecode()
+    { 
+        return textInput.getText();
+    }
+    
+    public void printToTextOutput(String arg)
+    { 
+        textOutput.setText(arg);
+    }
+    
+    
+
+    
     /**
      * @param args the command line arguments
      */
+    
+     public void printErrorMsg(Exception e)
+    {
+        JOptionPane.showMessageDialog(null,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+     
+     public void cleanFields(Exception e)
+    {
+        textInput.setText("");
+        seedInput.setText("");
+    }
+     
   
 
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton decrypt;
     private javax.swing.JRadioButton decryptRadio;
     private javax.swing.JRadioButton encryptRadio;
     private javax.swing.JList<String> historyList;
@@ -267,7 +357,8 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField seed;
+    private javax.swing.JTextField seedInput;
+    private javax.swing.JButton submit;
     private javax.swing.JTextField textInput;
     private javax.swing.JTextArea textOutput;
     // End of variables declaration//GEN-END:variables
