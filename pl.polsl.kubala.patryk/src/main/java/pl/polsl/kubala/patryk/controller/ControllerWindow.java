@@ -26,8 +26,9 @@ public class ControllerWindow {
     ControllerWindow(String[] args)
     {
         this.model = new Model();
-        this.view = new View();
+        //this.view = new View();
         this.window = new Window();
+        //window.startingWindow();
         this.controller(args);
     }
    
@@ -37,11 +38,9 @@ public class ControllerWindow {
      */
     private void controller(String[] args)
     {
-         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Window().setVisible(true);
-            }
-        });
+         
+                window.setVisible(true);
+        
          
         try
         {
@@ -60,13 +59,22 @@ public class ControllerWindow {
             model.setNoError(true);
             if (!model.getFromCL()) {
                 window.buttonWaitForClicked();
-                model.setSeed(window.getKeySeed());
+            try
+            {
+            model.setSeed(window.getKeySeed());
+            }
+            catch (NumberFormatException e)
+            {
+                window.printErrorMsg(e);
+            }
+                
                 //view.showMenu();
-                System.out.println("test2");
+
                 model.setChoice(window.getChoice());
+                                
             }
             model.setKey();
-            
+            System.out.println("PASSED");
             model.setchoiceEnum(model.getChoice());
             switch (model.getchoiceEnum()) {
                 // DECODE ------------------------
@@ -92,7 +100,7 @@ public class ControllerWindow {
                 // ENCODE ------------------------
                 case ENCODE ->  {
                     if (!model.getFromCL()) {
-                        model.setText(view.toEncode());
+                        model.setText(window.toEncode());
                     }
                     try {
                          window.printToTextOutput(model.encodeText());
@@ -107,7 +115,7 @@ public class ControllerWindow {
                 
                
             }
-           
+            window.notifyWaiter();
             model.destroyKey();
             model.setFromCL(false);
         }

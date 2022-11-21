@@ -4,6 +4,7 @@
  */
 package pl.polsl.kubala.patryk.view;
 import java.util.Scanner;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 /**
  *
@@ -19,8 +20,9 @@ public class Window extends javax.swing.JFrame {
         
         decryptRadio.setSelected(rootPaneCheckingEnabled);
     }
-
-    private final Object waiter = new Object();
+    private JFrame frame;
+    final static Object waiter = new Object();
+    final static Object supmen = new Object();
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,7 +36,6 @@ public class Window extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        submit = new javax.swing.JButton();
         textInput = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         textOutput = new javax.swing.JTextArea();
@@ -63,6 +64,7 @@ public class Window extends javax.swing.JFrame {
             }
         });
 
+        textOutput.setEditable(false);
         textOutput.setColumns(20);
         textOutput.setRows(5);
         textOutput.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -80,9 +82,18 @@ public class Window extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Homophonic cipher");
 
+        seedInput.setText("123");
         seedInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seedInputActionPerformed(evt);
+            }
+        });
+        seedInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                seedInputKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                seedInputKeyTyped(evt);
             }
         });
 
@@ -148,6 +159,8 @@ public class Window extends javax.swing.JFrame {
                 .addGap(40, 40, 40))
         );
 
+        seedInput.getAccessibleContext().setAccessibleDescription("");
+
         jTabbedPane2.addTab("Cypher", jPanel1);
 
         historyList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -208,13 +221,14 @@ public class Window extends javax.swing.JFrame {
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
         System.out.println("test1");
-         if(seedInput.getText().isEmpty())
+         if(seedInput.getText().isEmpty() || !isNumeric(seedInput.getText()))
         {
             JOptionPane.showMessageDialog(rootPane,
                     "Please provide a number as a seed",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
+        
         else if(textInput.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(rootPane,
@@ -224,17 +238,87 @@ public class Window extends javax.swing.JFrame {
         }
         else
         {
-            synchronized (this) {
-                this.notify();
-                System.out.println("test4");
+            
+            synchronized (supmen) {
+                
+                supmen.notifyAll();
+                System.out.println("waiter.notify()");
+           
             }
-           // waitForWaiter();
+            waitForWaiter();
           //  fillTable();
         }
         
     }//GEN-LAST:event_submitActionPerformed
 
-    public void waitForWaiter(){
+    private void seedInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedInputKeyTyped
+        // TODO add your handling code here:
+        //seed =  Integer.parseInt(seedInput.getText());
+               
+               // System.out.println(g);
+                
+    }//GEN-LAST:event_seedInputKeyTyped
+
+    private void seedInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedInputKeyReleased
+        // TODO add your handling code here:
+        
+          
+
+        
+    }//GEN-LAST:event_seedInputKeyReleased
+
+
+
+     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton decryptRadio;
+    private javax.swing.JRadioButton encryptRadio;
+    private javax.swing.JList<String> historyList;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane2;
+    public javax.swing.JTextField seedInput;
+    private static final javax.swing.JButton submit = new javax.swing.JButton();
+    private javax.swing.JTextField textInput;
+    private javax.swing.JTextArea textOutput;
+    // End of variables declaration//GEN-END:variables
+
+
+   public static boolean isNumeric(String str) { 
+  try {  
+    Double.parseDouble(str);  
+    return true;
+  } catch(NumberFormatException e){  
+    return false;  
+  }  
+}
+    
+         public void buttonWaitForClicked(){
+             //System.out.println("test3");
+        synchronized (supmen)
+        {
+            try
+            {
+                System.out.println("supmen wait");
+                supmen.wait();
+                System.out.println("supmen start");
+            }
+            catch (InterruptedException ignored)
+            {
+
+            }
+        }
+        
+    }
+    
+          public void waitForWaiter()
+    {
         synchronized (waiter)
         {
             try
@@ -247,24 +331,6 @@ public class Window extends javax.swing.JFrame {
             }
         }
     }
-    
-         public void buttonWaitForClicked(){
-             System.out.println("test3");
-        synchronized (this)
-        {
-            try
-            {
-                this.wait();
-                System.out.println("test13");
-            }
-            catch (InterruptedException ignored)
-            {
-
-            }
-        }
-        System.out.println("test5");
-    }
-    
      /**
      * Notify waiter.
      */
@@ -278,18 +344,14 @@ public class Window extends javax.swing.JFrame {
     
     
   
-    public void errorPop(String e)
-    {
-        System.out.println("works");
-        JOptionPane.showMessageDialog(rootPane, e, "Error", HEIGHT);
-    }
+
     
    
     public int getKeySeed()
     {
-        String i = seedInput.getText();
-       
-        return Integer.parseInt(i);
+      
+        
+    return  Integer.parseInt(seedInput.getText());
     }
     
     public int getChoice()
@@ -301,9 +363,11 @@ public class Window extends javax.swing.JFrame {
         {
             if( encryptRadio.isSelected()){
             choiceNumber = 0;
+            System.out.println("Selected encrypt");
         }else
         if( decryptRadio.isSelected()){
             choiceNumber = 1;
+            System.out.println("Selected decrypt");
         }
         }
         while(choiceNumber<0||choiceNumber>1);
@@ -314,6 +378,13 @@ public class Window extends javax.swing.JFrame {
     { 
         return textInput.getText();
     }
+    
+     public String toEncode()
+    {
+       
+        return textInput.getText();
+    }
+
     
     public void printToTextOutput(String arg)
     { 
@@ -334,6 +405,7 @@ public class Window extends javax.swing.JFrame {
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
+    
      
      public void cleanFields(Exception e)
     {
@@ -343,23 +415,12 @@ public class Window extends javax.swing.JFrame {
      
   
 
-     
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JRadioButton decryptRadio;
-    private javax.swing.JRadioButton encryptRadio;
-    private javax.swing.JList<String> historyList;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField seedInput;
-    private javax.swing.JButton submit;
-    private javax.swing.JTextField textInput;
-    private javax.swing.JTextArea textOutput;
-    // End of variables declaration//GEN-END:variables
+
+
+
+
+
+
+
+
 }

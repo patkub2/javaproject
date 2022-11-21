@@ -1,6 +1,8 @@
 
 package pl.polsl.kubala.patryk.controller;
 import pl.polsl.kubala.patryk.controller.ControllerWindow;
+import pl.polsl.kubala.patryk.controller.Controller;
+
 
 /**
  * Class responsible for accurately calling {@link pl.polsl.kubala.patryk.model.Model} methods
