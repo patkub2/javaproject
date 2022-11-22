@@ -3,28 +3,45 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pl.polsl.kubala.patryk.view;
+
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
+ * Class that is responsible for displaying the GUI
  *
- * @author patry
+ *
+ * @author Patryk Kubala
+ * @version 1.1
  */
 public class Window extends javax.swing.JFrame {
 
     /**
-     * Creates new form Window
+     * Window initializator running a function that starts all of its components
      */
     public Window() {
         initComponents();
-        
+
         decryptRadio.setSelected(rootPaneCheckingEnabled);
     }
-    private JFrame frame;
+
+    /**
+     * Waiter object used for correct synchronization between
+     * {@link pl.polsl.kubala.patryk.view.Window} and
+     * {@link pl.polsl.kubala.patryk.controller.Controller}
+     */
     final static Object waiter = new Object();
-    final static Object supmen = new Object();
-    
+
+    /**
+     * Second waiter object used for correct synchronization between
+     * {@link pl.polsl.kubala.patryk.view.Window} and
+     * {@link pl.polsl.kubala.patryk.controller.Controller} after running
+     * program
+     */
+    final static Object waiterEnd = new Object();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,8 +153,7 @@ public class Window extends javax.swing.JFrame {
 
         historyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"34", "345",  new Integer(35), "345", "345"},
-                {"234", "345",  new Integer(54), "45", "34"}
+
             },
             new String [] {
                 "Date", "Text", "Seed", "Operation", "Result"
@@ -191,42 +207,38 @@ public class Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * Listener function for the button, checking if input is not empty, sending
+     * signal to controller and adding a row to the history table
+     *
+     * @param evt action event signal triggered by a press of the button
+     */
+
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-        System.out.println("test1");
-         if(seedInput.getText().isEmpty() || !isNumeric(seedInput.getText()))
-        {
+        if (seedInput.getText().isEmpty() || !isNumeric(seedInput.getText())) {
             JOptionPane.showMessageDialog(rootPane,
                     "Please provide a number as a seed",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-        }
-        
-        else if(textInput.getText().isEmpty())
-        {
+        } else if (textInput.getText().isEmpty()) {
             JOptionPane.showMessageDialog(rootPane,
                     "Please provide a text to perform an operation on",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-        }
-        else
-        {
-            
-            synchronized (supmen) {
-                
-                supmen.notifyAll();
-                System.out.println("waiter.notify()");
-           
+        } else {
+
+            synchronized (waiterEnd) {
+                waiterEnd.notifyAll();
             }
             waitForWaiter();
             fillTable();
         }
-        
+
     }//GEN-LAST:event_submitActionPerformed
 
 
-
-     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton decryptRadio;
@@ -246,162 +258,167 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JTextArea textOutput;
     // End of variables declaration//GEN-END:variables
 
-
-   public static boolean isNumeric(String str) { 
-  try {  
-    Double.parseDouble(str);  
-    return true;
-  } catch(NumberFormatException e){  
-    return false;  
-  }  
-}
-    
-         public void buttonWaitForClicked(){
-             //System.out.println("test3");
-        synchronized (supmen)
-        {
-            try
-            {
-                System.out.println("supmen wait");
-                supmen.wait();
-                System.out.println("supmen start");
-            }
-            catch (InterruptedException ignored)
-            {
-
-            }
-        }
-        
-    }
-    
-          public void waitForWaiter()
-    {
-        synchronized (waiter)
-        {
-            try
-            {
-                waiter.wait();
-            }
-            catch (InterruptedException ignored)
-            {
-
-            }
-        }
-    }
-     /**
-     * Notify waiter.
+    /**
+     * Function for checking if string has only numbers inside
+     *
+     * @param str input string with we want to check
+     * @return returns true if there are only numbers else false
      */
-    public void notifyWaiter()
-    {
-        synchronized (waiter)
-        {
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Function with prevents while loop from running so the user can input data
+     * inside fields usses a waiter wor stoping the program
+     */
+    public void buttonWaitForClicked() {
+        synchronized (waiterEnd) {
+            try {
+                waiterEnd.wait();
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
+
+    /**
+     * Function with prevents while loop from running so the user can input data
+     * inside fields usses a waiter wor stoping the program
+     */
+    public void waitForWaiter() {
+        synchronized (waiter) {
+            try {
+                waiter.wait();
+            } catch (InterruptedException ignored) {
+
+            }
+        }
+    }
+
+    /**
+     * Function that notifys waiter after stoping the program
+     */
+    public void notifyWaiter() {
+        synchronized (waiter) {
             waiter.notify();
         }
     }
-    
-    
-  
 
-    
-   
-    public int getKeySeed()
-    {
- 
-    return  Integer.parseInt(seedInput.getText());
+    /**
+     * Getter function for getting data from seed field
+     *
+     * @return data from seed field
+     */
+    public int getKeySeed() {
+
+        return Integer.parseInt(seedInput.getText());
     }
-    
-    public void setVieldsFromCmd(int seed,String text)
-    {
- 
+
+    /**
+     * Function for setting fields from cmd after running program
+     *
+     * @param seed value to be placed in seed field
+     * @param text value to be placed in text field
+     */
+    public void setVieldsFromCmd(int seed, String text) {
+
         seedInput.setText(String.valueOf(seed));
         textInput.setText(text);
     }
-    
-    public int getChoice()
-    {
-        int choiceNumber =0;
-        
-       
-        do
-        {
-            if( encryptRadio.isSelected()){
-            choiceNumber = 0;
-            System.out.println("Selected encrypt");
-        }else
-        if( decryptRadio.isSelected()){
-            choiceNumber = 1;
-            System.out.println("Selected decrypt");
-        }
-        }
-        while(choiceNumber<0||choiceNumber>1);
+
+    /**
+     * Fuction for checking whith of the two radio buttons is selected
+     *
+     * @return number 0 for enryption 1 for decryption
+     */
+    public int getChoice() {
+        int choiceNumber = 0;
+
+        do {
+            if (encryptRadio.isSelected()) {
+                choiceNumber = 0;
+            } else if (decryptRadio.isSelected()) {
+                choiceNumber = 1;
+            }
+        } while (choiceNumber < 0 || choiceNumber > 1);
         return choiceNumber;
     }
-    
-    public String toDecode()
-    { 
-        return textInput.getText();
-    }
-    
-     public String toEncode()
-    {
-       
+
+    /**
+     * Getter function for getting data from text field
+     *
+     * @return data from text field
+     */
+    public String getText() {
         return textInput.getText();
     }
 
-    
-    public void printToTextOutput(String arg)
-    { 
+    /**
+     * Function that takes value and puts it into output field
+     *
+     * @param arg String whith is put into textOutput field
+     */
+    public void printToTextOutput(String arg) {
         textOutput.setText(arg);
     }
-    
-    
 
-    
     /**
-     * @param args the command line arguments
+     * Function for printing error messages to screen in form of JOptionPane
+     *
+     * @param e Exeption to be thrown
      */
-    
-     public void printErrorMsg(Exception e)
-    {
+    public void printErrorMsg(Exception e) {
         JOptionPane.showMessageDialog(null,
                 e.getMessage(),
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
-     public String checkSelection()
-    {
-          if( encryptRadio.isSelected() ){
+
+    /**
+     * Funtion for returning string value for history data table
+     *
+     * @return string from radio buttons select
+     */
+    public String checkSelection() {
+        if (encryptRadio.isSelected()) {
             return "Encrypt";
-        }else 
-              return "Decrypt";
+        } else {
+            return "Decrypt";
+        }
     }
-      public String checkIfPassed(String arg)
-    {
-          if( arg.isEmpty() ){
+
+    /**
+     * Checks if the srting is empty
+     *
+     * @param arg string to be checked if empty
+     * @return ERROR if empty else string value
+     */
+    public String checkIfPassed(String arg) {
+        if (arg.isEmpty()) {
             return "ERROR";
-        }else 
-              return arg;
+        } else {
+            return arg;
+        }
     }
-     private void fillTable()
-    {
-        DefaultTableModel tblModel = (DefaultTableModel)historyTable.getModel();
+
+    /**
+     * Function used to add a row in the history table
+     */
+    private void fillTable() {
+        DefaultTableModel tblModel = (DefaultTableModel) historyTable.getModel();
         tblModel.addRow((new Object[]{java.util.Calendar.getInstance().getTime(), textInput.getText(), seedInput.getText(), checkSelection(), checkIfPassed(textOutput.getText())}));
     }
-     
-     public void cleanFields()
-    {
-       // textInput.setText("");
+
+    /**
+     * Function for cleaning output field
+     */
+    public void cleanFields() {
         textOutput.setText("");
     }
-     
-  
-
-
-
-
-
-
-
-
 
 }
