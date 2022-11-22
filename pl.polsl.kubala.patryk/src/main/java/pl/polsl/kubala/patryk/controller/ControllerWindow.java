@@ -57,6 +57,9 @@ public class ControllerWindow {
 
         while (true) {
             model.setNoError(true);
+            if (model.getFromCL()) {
+                window.setVieldsFromCmd(model.getSeed(),model.getText());
+            }
             if (!model.getFromCL()) {
                 window.buttonWaitForClicked();
             try
@@ -68,7 +71,7 @@ public class ControllerWindow {
                 window.printErrorMsg(e);
             }
                 
-                //view.showMenu();
+                //view.showMenus();
 
                 model.setChoice(window.getChoice());
                                 
@@ -90,6 +93,7 @@ public class ControllerWindow {
                         
                       model.setText(model.decodeText());
                     } catch (IncorrectTextException e) {
+                        window.cleanFields();
                         window.notifyWaiter();
                         window.printErrorMsg(e);
                         model.setFromCL(false);
@@ -106,6 +110,7 @@ public class ControllerWindow {
                          window.printToTextOutput(model.encodeText());
                        
                     } catch (IncorrectTextException e) {
+                        window.cleanFields();
                         window.notifyWaiter();
                         window.printErrorMsg(e);
                         model.setFromCL(false);
@@ -115,7 +120,9 @@ public class ControllerWindow {
                 
                
             }
+           //window.cleanFields();
             window.notifyWaiter();
+            
             model.destroyKey();
             model.setFromCL(false);
         }

@@ -6,6 +6,7 @@ package pl.polsl.kubala.patryk.view;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author patry
@@ -46,8 +47,8 @@ public class Window extends javax.swing.JFrame {
         encryptRadio = new javax.swing.JRadioButton();
         decryptRadio = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        historyList = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        historyTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,44 +59,14 @@ public class Window extends javax.swing.JFrame {
             }
         });
 
-        textInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textInputKeyTyped(evt);
-            }
-        });
-
         textOutput.setEditable(false);
         textOutput.setColumns(20);
         textOutput.setRows(5);
-        textOutput.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                textOutputAncestorAdded(evt);
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
         jScrollPane1.setViewportView(textOutput);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Homophonic cipher");
-
-        seedInput.setText("123");
-        seedInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seedInputActionPerformed(evt);
-            }
-        });
-        seedInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                seedInputKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                seedInputKeyTyped(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Seed");
@@ -163,28 +134,43 @@ public class Window extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Cypher", jPanel1);
 
-        historyList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        historyTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"34", "345",  new Integer(35), "345", "345"},
+                {"234", "345",  new Integer(54), "45", "34"}
+            },
+            new String [] {
+                "Date", "Text", "Seed", "Operation", "Result"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
         });
-        jScrollPane2.setViewportView(historyList);
+        jScrollPane3.setViewportView(historyTable);
+        if (historyTable.getColumnModel().getColumnCount() > 0) {
+            historyTable.getColumnModel().getColumn(0).setResizable(false);
+            historyTable.getColumnModel().getColumn(1).setResizable(false);
+            historyTable.getColumnModel().getColumn(2).setResizable(false);
+            historyTable.getColumnModel().getColumn(3).setResizable(false);
+            historyTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
-                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 5, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane2.addTab("History", jPanel2);
@@ -204,19 +190,6 @@ public class Window extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void seedInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seedInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_seedInputActionPerformed
-
-    private void textOutputAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_textOutputAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textOutputAncestorAdded
-
-    private void textInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textInputKeyTyped
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_textInputKeyTyped
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
@@ -246,26 +219,10 @@ public class Window extends javax.swing.JFrame {
            
             }
             waitForWaiter();
-          //  fillTable();
+            fillTable();
         }
         
     }//GEN-LAST:event_submitActionPerformed
-
-    private void seedInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedInputKeyTyped
-        // TODO add your handling code here:
-        //seed =  Integer.parseInt(seedInput.getText());
-               
-               // System.out.println(g);
-                
-    }//GEN-LAST:event_seedInputKeyTyped
-
-    private void seedInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedInputKeyReleased
-        // TODO add your handling code here:
-        
-          
-
-        
-    }//GEN-LAST:event_seedInputKeyReleased
 
 
 
@@ -274,14 +231,14 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton decryptRadio;
     private javax.swing.JRadioButton encryptRadio;
-    private javax.swing.JList<String> historyList;
+    private javax.swing.JTable historyTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
     public javax.swing.JTextField seedInput;
     private static final javax.swing.JButton submit = new javax.swing.JButton();
@@ -349,9 +306,15 @@ public class Window extends javax.swing.JFrame {
    
     public int getKeySeed()
     {
-      
-        
+ 
     return  Integer.parseInt(seedInput.getText());
+    }
+    
+    public void setVieldsFromCmd(int seed,String text)
+    {
+ 
+        seedInput.setText(String.valueOf(seed));
+        textInput.setText(text);
     }
     
     public int getChoice()
@@ -405,12 +368,30 @@ public class Window extends javax.swing.JFrame {
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
-    
-     
-     public void cleanFields(Exception e)
+     public String checkSelection()
     {
-        textInput.setText("");
-        seedInput.setText("");
+          if( encryptRadio.isSelected() ){
+            return "Encrypt";
+        }else 
+              return "Decrypt";
+    }
+      public String checkIfPassed(String arg)
+    {
+          if( arg.isEmpty() ){
+            return "ERROR";
+        }else 
+              return arg;
+    }
+     private void fillTable()
+    {
+        DefaultTableModel tblModel = (DefaultTableModel)historyTable.getModel();
+        tblModel.addRow((new Object[]{java.util.Calendar.getInstance().getTime(), textInput.getText(), seedInput.getText(), checkSelection(), checkIfPassed(textOutput.getText())}));
+    }
+     
+     public void cleanFields()
+    {
+       // textInput.setText("");
+        textOutput.setText("");
     }
      
   
