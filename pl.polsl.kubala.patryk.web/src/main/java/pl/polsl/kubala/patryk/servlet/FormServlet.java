@@ -42,6 +42,7 @@ public class FormServlet extends HttpServlet {
         response.setContentType("text/html; charset=ISO-8859-2");
         PrintWriter out = response.getWriter();
 
+        
         // Get parameter values - firstName i lastName
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");

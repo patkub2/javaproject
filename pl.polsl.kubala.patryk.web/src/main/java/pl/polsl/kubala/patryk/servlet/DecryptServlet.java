@@ -35,9 +35,9 @@ public class DecryptServlet extends HttpServlet {
 
         response.setContentType("text/html; charset=ISO-8859-2");
         PrintWriter output = response.getWriter();
-        String text= request.getParameter("Text");
-        String keySeed = request.getParameter("KeySeed");
-        String radioBut = request.getParameter("choose action");
+        String text= request.getParameter("textField");
+        String keySeed = request.getParameter("seed");
+        String radioBut = request.getParameter("choose");
         Model model = new Model();
         model.setText(text);
         int newKey = 0;
@@ -81,7 +81,7 @@ public class DecryptServlet extends HttpServlet {
             noOfErrors++;
             Cookie cookie = new Cookie("errorCount", Integer.toString(noOfErrors));
             response.addCookie(cookie);
-            response.sendError(response.SC_BAD_REQUEST, e.getMessage());
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
 
     }

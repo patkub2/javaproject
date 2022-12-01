@@ -1,7 +1,7 @@
 package pl.polsl.kubala.patryk.servlet;
 
-import pl.polsl.grabowski.mateusz.model.IncorrectEncryptOrDecryptTextException;
-import pl.polsl.grabowski.mateusz.model.Model;
+import pl.polsl.kubala.patryk.model.IncorrectTextException;
+import pl.polsl.kubala.patryk.model.Model;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,9 +34,9 @@ public class EncryptServlet extends HttpServlet {
 
         response.setContentType("text/html; charset=ISO-8859-2");
         PrintWriter output = response.getWriter();
-        String text= request.getParameter("Text");
-        String keySeed = request.getParameter("KeySeed");
-        String radioBut = request.getParameter("choose action");
+        String text= request.getParameter("textField");
+        String keySeed = request.getParameter("seed");
+        String radioBut = request.getParameter("choose");
         Model model = new Model();
         model.setText(text);
         int newKey = 0;
@@ -49,7 +49,7 @@ public class EncryptServlet extends HttpServlet {
         {
             if(Model.EnumChoice.values()[i].name().equalsIgnoreCase(radioBut))
             {
-                model.setChoose(i);
+                model.setchoiceEnum(i);
                 break;
             }
         }
@@ -60,12 +60,12 @@ public class EncryptServlet extends HttpServlet {
                             "<body>\n" +
                             "<p>Text: " + text + "</p>\n" +
                             "<p>Key Seed: " + model.getSeed() + "</p>\n" +
-                            "<p>Encrypted: " + model.encryptText() + "</p>\n" +
+                            "<p>Encrypted: " + model.encodeText()+ "</p>\n" +
                             "<p>Choice: "+ radioBut +"</p>\n"+
                             "</body>\n" +
                             "</html>"
             );
-        } catch (IncorrectEncryptOrDecryptTextException e) {
+        } catch (IncorrectTextException e) {
             Cookie[] cookies = request.getCookies();
             int noOfErrors=0;
             if(cookies != null)
@@ -80,7 +80,7 @@ public class EncryptServlet extends HttpServlet {
             noOfErrors++;
             Cookie cookie = new Cookie("errorCount", Integer.toString(noOfErrors));
             response.addCookie(cookie);
-            response.sendError(response.SC_BAD_REQUEST, e.getMessage());
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
 
     }
