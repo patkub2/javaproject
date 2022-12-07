@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet that the web app forwards to when the user wants to encrypt
  *
- * @author Mateusz Grabowski
+ * @author Patryk Kubala
  * @version 1.0
  */
 @WebServlet("/encrypt")
@@ -80,6 +81,15 @@ public class EncryptServlet extends HttpServlet {
             noOfErrors++;
             Cookie cookie = new Cookie("errorCount", Integer.toString(noOfErrors));
             response.addCookie(cookie);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
+        try {
+            HttpSession session = request.getSession();
+            session.setAttribute("uname", "Time: "+java.util.Calendar.getInstance().getTime()+"<hr>Text: "+ text+"<hr>Seed: "+ model.getSeed()+"<hr>Operation: "+ radioBut+"<hr>Encoded text: "+ model.encodeText());
+            
+         
+            
+        } catch (IncorrectTextException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
 

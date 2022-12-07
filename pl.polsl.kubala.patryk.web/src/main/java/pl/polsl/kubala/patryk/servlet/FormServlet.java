@@ -10,7 +10,7 @@ import javax.servlet.http.*;
  * Main class of the servlet that demonstrates parameter download given during
  * servlet initialization
  *
- * @author Gall Anonim
+ * @author Patryk Kubala
  * @version 1.0
  */
 @WebServlet("/Form")
@@ -39,7 +39,7 @@ public class FormServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        response.setContentType("text/html; charset=ISO-8859-2");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         

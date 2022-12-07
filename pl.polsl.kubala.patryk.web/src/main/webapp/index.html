@@ -9,11 +9,7 @@
         <div style="display: flex; width: 100vw; height: 100vh;justify-content: center;align-items: center">
             <div style="border: solid black 2px; padding: 30px;">
                 <h1>Homophonic cipher</h1>
-                <form action="Form" method="GET">
-                    <p>First Name:</p><input type="text" size="20" name="firstname">
-                    <p>Last Name:</p><input type="text" size="20" name="lastname">
-                    <input type="submit" value="Submit" />
-                </form>
+
                 <form action="Cryp" method="POST" >
                     <label for="fname">Seed</label><br>
                     <input type="text" id="seed" name="seed"><br>
@@ -26,7 +22,19 @@
                     <label for="css">encode</label><br>
 
                     <input type="submit" value="Submit">
-                    </div>
-                    </div>
-                    </body>
-                    </html>
+                </form>
+                <hr>
+                <form action="CookieCheck" method="POST">
+                    <input type="submit" value="Check error cookies" />
+                </form>
+                <hr>
+                <hr>
+                <form action="History" method="POST">
+                    <input type="submit" value="Check history of action" />
+                </form>
+                <hr>
+            </div>
+
+        </div>
+    </body>
+</html>
