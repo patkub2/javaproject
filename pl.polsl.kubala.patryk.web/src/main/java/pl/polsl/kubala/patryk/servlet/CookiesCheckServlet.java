@@ -13,7 +13,7 @@ import java.io.PrintWriter;
  * Servlet that check cookies
  *
  * @author Patryk Kubala
- * @version 1.0
+ * @version 5.0
  */
 @WebServlet("/CookieCheck")
 public class CookiesCheckServlet extends HttpServlet {

@@ -5,12 +5,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 /**
+ * Main class of the servlet that demonstrates parameter download given during
+ * servlet initialization
  *
- * @author 
+ * @author Patryk Kubala
+ * @version 1.0
  */
 @Path("rest")
 public class JakartaEE8Resource {
     
+    /**
+     *
+     * @return
+     */
     @GET
     public Response ping(){
         return Response

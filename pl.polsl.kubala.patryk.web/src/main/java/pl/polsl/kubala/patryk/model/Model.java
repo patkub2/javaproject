@@ -53,17 +53,17 @@ public class Model {
     private String text;
 
     /**
-     * Boolean used in {@link pl.polsl.kubala.patryk.controller.Controller} to check if there is a error in loop
+     * Boolean used in  to check if there is a error in loop
      */
     private boolean noError = true;
 
     /**
-     * Boolean used in {@link pl.polsl.kubala.patryk.controller.Controller} to check a loop
+     * Boolean used in  to check a loop
      */
     private boolean fromCL = true;
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets its enum counterpart as choiceEnum
+     * Takes a value from and sets its enum counterpart as choiceEnum
      *
      * @param choiceArg the value given
      */
@@ -75,7 +75,7 @@ public class Model {
     }
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the noError
+     * Takes a value from  and sets it as the noError
      *
      * @param boolArg the value given
      */
@@ -85,7 +85,7 @@ public class Model {
     }
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the fromCL
+     * Takes a value from and sets it as the fromCL
      *
      * @param boolArg the value given
      */
@@ -95,7 +95,7 @@ public class Model {
     }
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the seed
+     * Takes a value from and sets it as the seed
      *
      * @param seedArg the value given
      */
@@ -105,7 +105,7 @@ public class Model {
     }
 
     /**
-     * Takes a value from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the choice
+     * Takes a value from and sets it as the choice
      *
      * @param choiceArg the value given
      */
@@ -117,7 +117,7 @@ public class Model {
     }
 
     /**
-     * Takes a String from {@link pl.polsl.kubala.patryk.controller.Controller} and sets it as the text
+     * Takes a String from and sets it as the text
      *
      * @param textArg the String given
      */
@@ -199,7 +199,7 @@ public class Model {
     /**
      * Function that checks command line arguments and saves them into appropiate variables
      *
-     * @param commandLineArgs command line argument passed from main through {@link pl.polsl.kubala.patryk.controller.Controller}
+     * @param commandLineArgs command line argument passed from main through 
      * @throws IncorrectInputException if not all of the required fields are filled using command line
      */
     public void takeFromCommandLine(String[] commandLineArgs) throws IncorrectInputException

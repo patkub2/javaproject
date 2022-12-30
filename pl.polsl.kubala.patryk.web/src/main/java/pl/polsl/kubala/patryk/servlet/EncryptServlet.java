@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -54,6 +59,7 @@ public class EncryptServlet extends HttpServlet {
                 break;
             }
         }
+        
 
         try {
             output.println(
@@ -83,16 +89,21 @@ public class EncryptServlet extends HttpServlet {
             response.addCookie(cookie);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
-        try {
-            HttpSession session = request.getSession();
-            session.setAttribute("uname", "Time: "+java.util.Calendar.getInstance().getTime()+"<hr>Text: "+ text+"<hr>Seed: "+ model.getSeed()+"<hr>Operation: "+ radioBut+"<hr>Encoded text: "+ model.encodeText());
-            
-         
-            
-        } catch (IncorrectTextException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        ////////////////////////
+          try ( Connection con = (Connection) request.getServletContext().getAttribute("dbconnection")) {
+            Statement statement = con.createStatement();
+            try {
+               // statement.executeUpdate("INSERT INTO Data VALUES (1, 'Nowak', '000 456 678 876 567','decode', 123)");
+                statement.executeUpdate("INSERT INTO Data VALUES (1, '" + text + "', '" + model.encodeText()+ "','"+ radioBut +"', " + model.getSeed() + ")");
+            } catch (IncorrectTextException ex) {
+                Logger.getLogger(EncryptServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            output.println("Column added");
+        
+        } catch (SQLException sqle) {
+            output.println(sqle.getMessage());
         }
-
+//////////////////////////
     }
 
     /**

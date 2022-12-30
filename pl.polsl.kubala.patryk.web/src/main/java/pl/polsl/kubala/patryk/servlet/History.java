@@ -7,6 +7,11 @@ package pl.polsl.kubala.patryk.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -17,10 +22,11 @@ import javax.servlet.http.HttpSession;
 import pl.polsl.kubala.patryk.model.IncorrectTextException;
 
 /**
- * Servlet that the web app forwards to when the user wants to show history of action
+ * Servlet that the web app forwards to when the user wants to show history of
+ * action
  *
  * @author Patryk Kubala
- * @version 1.0
+ * @version 5.0
  */
 @WebServlet(name = "History", urlPatterns = {"/History"})
 public class History extends HttpServlet {
@@ -36,16 +42,40 @@ public class History extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html; charset=ISO-8859-2");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter output = response.getWriter();
 
-        HttpSession session = request.getSession();
+       
 
-        output.println(
-                "<html>\n"+ session.getAttribute("uname") + "</html>"
-        );
         
-      
+        // make a connection to DB
+        try ( Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/cypher", "app", "app")) {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Data");
+            // Przeglądamy otrzymane wyniki
+           
+            output.println("<html>\n<table><tr><th>ID</th><th>text</th><th>decodedtext</th><th>operation</th><th>seed</th></tr>");
+            output.println("-----------------------------------");
+            while (rs.next()) {
+                output.println(
+                        "<tr>\n"
+                        + "    <td>" + rs.getInt("id") + "</td>\n"
+                        + "    <td>" + rs.getString("text") + "</td>\n"
+                        + "    <td>" + rs.getString("decodedtext") + "</td>\n"
+                        + "    <td>" + rs.getString("operation") + "</td>\n"
+                        + "    <td>" + rs.getInt("seed") + "</td>\n"
+                        + "  </tr>\n"
+                );
+            }
+             output.println(
+                        "</table></html>"
+                );
+            output.println("-----------------------------------");
+
+            rs.close();
+        } catch (SQLException sqle) {
+            System.err.println(sqle.getMessage());
+        }
 
     }
 
